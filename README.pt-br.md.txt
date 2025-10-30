@@ -65,3 +65,7 @@ Os dados geoespaciais brutos (shapefiles, GeoTIFFs) necessários para rodar este
 ## Estrutura do Projeto
 
 Este repositório é organizado como uma suíte de pipelines modulares. Cada script é autocontido e projetado para resolver uma tarefa de análise específica.
+
+## Licença
+
+Este projeto está licenciado sob a Licença MIT. Veja o arquivo `LICENSE` para detalhes.
