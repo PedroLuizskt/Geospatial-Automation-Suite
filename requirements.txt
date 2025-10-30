@@ -1,0 +1,50 @@
+# ==============================================================================
+# Python Dependencies for the Geospatial-Automation-Suite
+# ==============================================================================
+#
+# This file lists the core dependencies required to run the analysis pipelines.
+# It is strongly recommended to install these packages in a dedicated
+# virtual environment to avoid conflicts.
+#
+# Create environment: python -m venv .venv
+# Activate (Linux/macOS): source .venv/bin/activate
+# Activate (Windows):   .venv\Scripts\activate
+# Install:              pip install -r requirements.txt
+#
+
+# --- Core Geospatial (Vector & Raster) ---
+# For all vector data manipulation (read, write, clip, overlay)
+geopandas
+# For all raster data manipulation (read, write, mask, reproject)
+rasterio
+# For core geometric operations (used by geopandas)
+shapely
+# For handling Coordinate Reference Systems (CRS) and projections
+pyproj
+
+# --- Data Analysis & Numeric ---
+# For data manipulation, statistical analysis, and CSV I/O
+pandas
+# For numerical operations and array manipulation (core dependency)
+numpy
+
+# --- Cloud & Google Earth Engine ---
+# The official Google Earth Engine Python API
+earthengine-api
+# For GEE integration, interactive mapping, and data export
+geemap
+
+# --- Visualization & Reporting ---
+# The core plotting engine for creating all static maps and charts
+matplotlib
+# For adding web map basemaps (e.g., CartoDB, OpenStreetMap)
+contextily
+# For adding cartographically correct scale bars to maps
+matplotlib-scalebar
+# (Note: PdfPages is part of the core matplotlib library)
+
+# --- Utilities & Notebook Environment ---
+# For displaying rich outputs (HTML, DataFrames) in Jupyter
+ipython
+# For normalizing strings (e.g., removing accents for filenames)
+unidecode
