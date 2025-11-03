@@ -1,95 +1,153 @@
 # Geospatial-Automation-Suite
-A Python pipeline suite for on-demand territorial intelligence. Automates complex environmental analyses (CAR, Biomes, Soils, Hydro) for properties and municipalities. Integrates local (GeoPandas, Rasterio) and cloud (Google Earth Engine) processing to generate PDF reports, turning days of manual work into minutes.
 
+A [Python](https://www.python.org/) pipeline suite for on-demand territorial intelligence. Automates complex environmental analyses (CAR, Biomes, Soils, Hydro) integrating local ([GeoPandas](https://geopandas.org/), [Rasterio](https://rasterio.readthedocs.io/en/stable/)) and cloud ([Google Earth Engine](https://earthengine.google.com/)) processing to generate PDF reports, turning hours of manual work into minutes.
 
-1. Overview: The Problem
+The Portuguese `README.md` is available at [README.pt-br.md](https://www.google.com/search?q=README.pt-br.md).
 
-In many environmental and governmental institutions, the generation of technical reports and situational maps is a severe operational bottleneck. This process is often manual, repetitive, and slow, requiring analysts to spend days clipping, processing, and stylizing maps for a single rural property or municipality. This manual workflow is not scalable and is prone to human error.
+-----
 
+##  Objective & Solution
 
-2. The Solution: An On-Demand Intelligence Suite
+**The Problem:** In many environmental and governmental institutions, the generation of technical reports and situational maps is a manual, repetitive, and slow process, requiring analysts to spend hours or days processing data for a single rural property or municipality.
 
-This repository contains a production-ready suite of modular data pipelines that transform this entire workflow into an automated, scalable, on-demand system.
-It is designed as a "solution factory" that ingests raw geospatial data (both vector and raster) and outputs professional-grade PDF dossiers, complete with high-quality maps and statistical tables.
+**The Solution:** This repository contains a suite of modular data pipelines that transform this entire workflow into an automated, scalable system. It functions as a "solution factory" that ingests raw geospatial data and outputs professional-grade PDF dossiers, complete with high-quality maps and statistical tables.
 
+-----
 
-3. Key Features & Analyses
-This suite is composed of several independent, configurable pipelines that can be run for any Area of Interest (AOI), such as a municipality or a specific rural property.
+##  Key Features & Analyses
 
-3.1. CAR (Rural Environmental Registry) Analysis
+The suite is composed of independent, configurable pipelines that can be run for any Area of Interest (AOI).
 
-Municipal Dossier: Processes the complete SICAR database (attributes and geometries) for a given municipality, generating a full PDF dossier with maps and statistics for each CAR status (Active, Pending, Canceled). 
+### CAR (Rural Environmental Registry) Analysis
 
-Property-Level Characterization: Performs a detailed analysis of a single rural property, loading all its declared layers (APP, Legal Reserve, Consolidated Use, Native Vegetation). 
+  * **Municipal Dossier:** Processes the complete SICAR database (attributes and geometries) for a municipality, generating a PDF dossier with statistics for each CAR status.
+  * **Property-Level Characterization:** Performs a detailed analysis of a single rural property, loading all declared layers (APP, Legal Reserve, Consolidated Use, Native Vegetation).
+  * **Automatic Legal Reserve (RL) Balance:** Automatically calculates the RL deficit or surplus by cross-referencing the property with Biome and Legal Amazon boundaries to apply the correct required percentage (20%, 35%, or 80%).
 
-Automatic Legal Reserve (RL) Balance: Automatically calculates the Legal Reserve (RL) deficit or surplus by cross-referencing the property's location with official Biome and Legal Amazon boundaries to determine the correct required percentage (e.g., 20%, 35%, 80%). 
+### Thematic Analysis (Local Processing)
 
-3.2. Thematic Environmental Analysis (Local Processing)
+  * **Soils:** Clips and quantifies IBGE soil classes for the AOI.
+  * **Geomorphology:** Clips and quantifies geomorphological units (IBGE/CPRM).
+  * **Hydrography:** Analyzes the hydrographic network, identifies river springs, and calculates drainage density (km/km²).
+  * **Biomes & Vegetation:** Identifies and quantifies Biomes and Phytophysiognomies.
+  * **Climate:** Processes regional raster data to analyze Mean Annual Precipitation and Land Surface Temperature (LST).
 
-Soils: Clips the national IBGE soil map to the AOI and quantifies the area (ha) of each soil class. 
+### Cloud Analysis (GEE Integration)
 
-Geomorphology: Clips and quantifies the geomorphological units based on IBGE/CPRM data. 
+  * **Land Use & Cover Change:** Multitemporal analysis (1985-2024) using MapBiomas to quantify the evolution of land use.
+  * **Terrain Analysis (GEE):** Computes slope (steepness) from NASADEM DEMs on the fly.
+  * **Soil Carbon (GEE):** Quantifies Soil Organic Carbon (SOC) using MapBiomas Soil assets.
+  * **Forest Classification (GEE):** Classifies forest status (e.g., Primary, Secondary) using NASA/ORNL data.
+  * **Socio-Environmental (GEE):** Analyzes "Tree Proximate People" (TPP) data from FAO to assess population density near forests.
 
-Hydrography: Analyzes the official hydrographic network to map all watercourses, identify river springs, and calculate drainage density (km/km²) for the AOI. 
+-----
 
-Biomes & Vegetation: Identifies and quantifies the Biomes and Phytophysiognomies (vegetation types) present in the AOI. 
+##  Technology Stack
 
-Climate: Processes regional raster data to analyze mean annual precipitation and Land Surface Temperature (LST).
+  * **Core Data Processing:**
 
-3.3. Multitemporal & Cloud Analysis (GEE Integration)
+      * [Python 3.x](https://www.python.org/)
+      * [GeoPandas](https://geopandas.org/) & [Pandas](https://pandas.pydata.org/): Vector data manipulation and statistical analysis.
+      * [Rasterio](https://rasterio.readthedocs.io/en/stable/) & [Shapely](https://shapely.readthedocs.io/en/stable/): Raster processing, clipping, and masking.
+      * [NumPy](https://numpy.org/): Numerical calculations.
 
-Land Use & Cover Change: Performs a multitemporal analysis (1985-2024) using MapBiomas data to quantify the evolution of land use (e.g., pasture, agriculture, forest) within the AOI. 
+  * **Cloud & Big Data:**
 
-Terrain Analysis (GEE): Integrates with the Google Earth Engine API to compute slope (steepness) from NASADEM DEMs on the fly, classifying the result into standard relief classes. 
+      * [Google Earth Engine (GEE)](https://earthengine.google.com/): Python API for petabyte-scale cloud processing.
+      * [Geemap](https://geemap.org/): Interactive development and data export from GEE.
 
-Soil Carbon (GEE): Quantifies Soil Organic Carbon (SOC) using MapBiomas Soil assets, providing vital environmental metrics without local data storage.
+  * **Data Visualization & Reporting:**
 
-Forest Classification (GEE): Classifies forest status (e.g., Primary, Young Secondary) using NASA/ORNL global assets. 
+      * [Matplotlib](https://matplotlib.org/): Core engine for creating static maps and charts.
+      * [Contextily](https://contextily.readthedocs.io/en/latest/): Adding web map basemaps.
+      * [Matplotlib-Scalebar](https://github.com/ppinard/matplotlib-scalebar): Cartographic scale bars.
+      * `PdfPages`: Compiling outputs into multi-page PDF dossiers.
 
-Socio-Environmental (GEE): Analyzes "Tree Proximate People" (TPP) data from FAO/GEE to assess population density near forest cover. 
+-----
 
+##  Setup & Data
 
-4. Technology Stack
-This project was built using a robust stack of open-source geospatial libraries and cloud services.
+1.  **Clone the repository:**
 
-Core Data Processing:
+    ```bash
+    git clone https://github.com/PedroLuizskt/Geospatial-Automation-Suite.git
+    cd Geospatial-Automation-Suite
+    ```
 
-Python 3.x
+2.  **Install the dependencies:**
+    *(Recommended to create a virtual environment: `python -m venv .venv` and `source .venv/bin/activate`)*
 
-GeoPandas & Pandas: For all vector data manipulation and statistical analysis.
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-Rasterio & Shapely: For all raster processing, clipping, and masking operations.
+3.  **Download the Input Data:**
+    The raw geospatial data (shapefiles, GeoTIFFs, etc.) are not in this repository.
 
-NumPy: For numerical calculations and raster array manipulation.
+      * **Files to test the codes:** [**Download Input Data (Google Drive)**](https://drive.google.com/drive/folders/1X7DmXw88nwcVNRUOHANM8g19bBM2alZI?usp=drive_link)
 
-Cloud & Big Data:
+-----
 
-Google Earth Engine (GEE): Python API for cloud-based processing of large-scale datasets (DEMs, Soil Carbon).
+##  Running the Pipelines
 
-Geemap: For interactive development and data export from GEE.
+Each script in the `/pipelines_` folder is a complete, self-contained workflow.
 
-Data Visualization & Reporting:
+1.  **Configure the Script:** Open any script (e.g., `pipelines_/soil_.py`).
+2.  **Adjust Paths:** At the top of the script, you will find a `@dataclass` named `Config`. Update the paths (`PATH_...`) to point to where you saved the downloaded input data.
+3.  **Run the Script:**
+    ```bash
+    python pipelines_/soil_.py
+    ```
+4.  **Check Results:** The PDF dossier will be saved in your `PATH_EXPORTACAO`.
 
-Matplotlib: The core engine for creating all static maps and statistical charts.
+-----
 
-Contextily: For adding web map basemaps (e.g., CartoDB Positron) to maps.
+## 📁 Project Structure
 
-Matplotlib-Scalebar: For adding cartographically correct scale bars.
+```
+.
+├── .gitignore               # Ignores unnecessary files (e.g., .venv, __pycache__)
+├── LICENSE                  # MIT License
+├── README.md                # This file (English)
+├── README.pt-br.md          # Portuguese README
+├── requirements.txt         # Python dependencies for 'pip install'
+│
+├── pipelines_/
+│   ├── municipal_rural_property_caracterization.py
+│   ├── rural_property_caracterization.py
+│   ├── soil_.py
+│   ├── geomorphology_.py
+│   ├── hydrography_.py
+│   ├── phytophysiognomies_.py
+│   ├── preciptation_.py
+│   ├── temperature_lst_.py
+│   └── multitemporal_.py
+│
+├── gee_snipets/
+│   ├── forest_classification_2020_V1.py
+│   ├── ndvi_.py
+│   ├── soil_carbon_.py
+│   ├── terrain_analysis.py
+│   └── treeproximatepeople_.py
+│
+└── exemple_outputs/
+    ├── Dossie_CAR_buritizeiro.pdf
+    ├── Relatorio_Carbono_Solo_...pdf
+    ├── Relatorio_Declividade_...pdf
+    └── ... (dozens of other example reports)
+```
 
-PdfPages: For compiling all outputs (maps and tables) into a single, multi-page PDF dossier.
+-----
 
+##  Best Practices Applied
 
-5. Project Structure
-This repository is organized as a suite of modular pipelines. Each script is self-contained and designed to solve a specific analysis task.
+  * **Modular Code:** Each pipeline is self-contained and focused on a single task.
+  * **Configuration Separation:** Uses `@dataclass` to separate paths and parameters (Config) from execution logic (Pipeline), allowing for easy reuse.
+  * **Hybrid Processing:** An architecture that decides when to use local processing (GeoPandas) for small/local data and when to use cloud processing (GEE) for planetary-scale datasets (e.g., MapBiomas, NASADEM).
+  * **Reproducibility:** Generates professional, automated cartographic reports with Matplotlib.
 
-/pipelines: Contains the core Python scripts, each representing a complete analysis (e.g., pipeline_soil_analysis.py, pipeline_car_characterization.py).
+-----
 
-/gee_scripts: Contains any stand-alone Earth Engine scripts used for prototyping or data exploration.
+##  Author
 
-/examples: Contains example PDF outputs generated by the pipelines, showcasing the final product.
-
-
-6. License
-This project is licensed under the MIT License. See the LICENSE file for details.
-
-Files to text the code = https://drive.google.com/drive/folders/1X7DmXw88nwcVNRUOHANM8g19bBM2alZI?usp=drive_link
+Developed by **Pedro Luiz**.
